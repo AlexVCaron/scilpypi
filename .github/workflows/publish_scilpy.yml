@@ -32,7 +32,6 @@ jobs:
         with:
           repository: scilus/scilpy
           ref: ${{steps.tag.outputs.tag}}
-          path: scilpy
 
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==2.16.2
@@ -40,7 +39,6 @@ jobs:
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
         env:
-          CIBW_PROJECT_REQUIRES_PYTHON: 3.10
           CIBW_BUILD_FRONTEND: build
 
       - uses: actions/upload-artifact@v3
