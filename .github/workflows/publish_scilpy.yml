@@ -37,8 +37,8 @@ jobs:
           CIBW_BEFORE_BUILD: >
             yum -y update && yum -y install \
               blas-devel \
-              lapack-dev \
-              freetype-dev
+              lapack-devel \
+              freetype-devel
           CIBW_BUILD: cp38-* cp39-* cp310-* pp39-* pp310-*
           CIBW_SKIP: "*-win *-win32 *-musllinux"
 
