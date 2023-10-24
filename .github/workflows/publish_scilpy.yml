@@ -24,9 +24,14 @@ jobs:
       - name: Install Scilpy dependencies
         run: bash prepare_scilpy.sh
 
+      - name: Get tag
+        id: tag
+        uses: dawidd6/action-get-tag@v1
+
       - uses: actions/checkout@v4
         with:
           repository: scilus/scilpy
+          ref: ${{steps.tag.outputs.tag}}
           path: scilpy
 
       - name: Install cibuildwheel
