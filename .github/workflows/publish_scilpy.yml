@@ -40,7 +40,7 @@ jobs:
               lapack-devel \
               freetype-devel
           CIBW_BUILD: cp38-* cp39-* cp310-* pp39-*
-          CIBW_SKIP: "*-win *-win32 *-musllinux *i686"
+          CIBW_SKIP: "*-win* *-win32* *-musllinux* *i686"
 
       - uses: actions/upload-artifact@v3
         with:
