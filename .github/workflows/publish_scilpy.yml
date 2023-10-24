@@ -36,7 +36,7 @@ jobs:
           CIBW_BUILD_FRONTEND: build
           CIBW_BEFORE_BUILD: >
             yum -y update && yum -y install \
-              blas-dev \
+              blas-devel \
               lapack-dev \
               freetype-dev
           CIBW_BUILD: cp38-* cp39-* cp310-* pp39-* pp310-*
