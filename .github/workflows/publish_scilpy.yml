@@ -35,10 +35,10 @@ jobs:
         env:
           CIBW_BUILD_FRONTEND: build
           CIBW_BEFORE_BUILD: >
-            apt-get update && apt-get -y install \
-              libblas-dev \
-              liblapack-dev \
-              libfreetype6-dev
+            yum -y update && yum -y install \
+              blas-dev \
+              lapack-dev \
+              freetype-dev
           CIBW_BUILD: cp38-* cp39-* cp310-* pp39-* pp310-*
           CIBW_SKIP: "*-win *-win32 *-musllinux"
 
