@@ -30,6 +30,16 @@ jobs:
       - name: Patch scilpy requirements
         run: wget https://raw.githubusercontent.com/AlexVCaron/scilpypi/${{steps.tag.outputs.tag}}/scilpy-requirements.txt.fix -O requirements.txt
 
+      - name: Install pipx
+        uses: CfirTsabari/actions-pipx@v1
+
+      - name: Create sdist for Scilpy
+        run: pipx run build --sdist
+
+      - uses: actions/upload-artifact@v3
+        with:
+          path: ./sdist
+
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==2.16.2
 
