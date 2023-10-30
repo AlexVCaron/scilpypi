@@ -38,7 +38,7 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          path: ./sdist
+          path: ./dist
 
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==2.16.2
