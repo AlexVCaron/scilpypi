@@ -28,7 +28,7 @@ jobs:
           ref: ${{steps.tag.outputs.tag}}
 
       - name: Patch scilpy requirements
-        run: wget https://raw.githubusercontent.com/AlexVCaron/scilpypi/${{steps.tag.outputs.tag}}/scilpy-requires.txt.fix -O requirements.txt
+        run: wget https://raw.githubusercontent.com/AlexVCaron/scilpypi/${{steps.tag.outputs.tag}}/scilpy-requirements.txt.fix -O requirements.txt
 
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==2.16.2
