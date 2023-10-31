@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import glob
+from packaging.version import parse
 
 # Format expected by setup.py and doc/source/conf.py: string of form "X.Y.Z"
 _version_major = 1
@@ -27,25 +28,12 @@ CLASSIFIERS = ["Development Status :: 3 - Alpha",
 
 PYTHON_VERSION = ""
 with open('.python-version') as f:
-    _py_versions = []
-    for ver_spec in f:
-        py_version = ver_spec.strip("\n").split(".")
-        py_major = py_version[0]
-        py_minor = py_version[1]
-        py_micro = "*"
-        py_extra = None
-        if len(py_version) > 2:
-            py_micro = py_version[2]
-        if len(py_version) > 3:
-            py_extra = py_version[3]
+    _py_versions = sorted([parse(spec.strip("\n")) for spec in f])
 
-        py_version = ".".join([py_major, py_minor, py_micro])
-        if py_extra:
-            py_version = ".".join([py_version, py_extra])
-
-        _py_versions.append("".join(["==", py_version]))
-
-    PYTHON_VERSION = ", ".join(_py_versions)
+    if len(_py_versions) == 1:
+        PYTHON_VERSION=f"~={_py_versions[0]}"
+    else:
+        PYTHON_VERSION=f">={_py_versions[0]},<={_py_versions[-1]}"
 
 # Description should be a one-liner:
 description = "Scilpy: diffusion MRI tools and utilities"
