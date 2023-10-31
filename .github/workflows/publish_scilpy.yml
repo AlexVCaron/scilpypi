@@ -34,8 +34,8 @@ jobs:
 
       - name: Create source distribution for Scilpy
         run: |
-          pip install packaging
-          pipx run --system-site-packages build --sdist --outdir ${GITHUB_WORKSPACE}/sdist ${GITHUB_WORKSPACE}/scilpy
+          pipx install --force packaging
+          pipx run build --sdist --outdir ${GITHUB_WORKSPACE}/sdist ${GITHUB_WORKSPACE}/scilpy
 
       - name: Build wheels for Scilpy
         uses: pypa/cibuildwheel@v2.16.2
