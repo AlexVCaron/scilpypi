@@ -16,8 +16,9 @@ jobs:
         os: [ubuntu-20.04]
 
     steps:
-      - id: workspace
-        run: echo "::set-output name=path::${GITHUB_WORKSPACE}"
+      - name: Save workspaces path
+        id: workspace
+        run: echo "path=${GITHUB_WORKSPACE}" >> $GITHUB_OUTPUT
 
       - name: Checkout Scilpy 
         uses: actions/checkout@v4
