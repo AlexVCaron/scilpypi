@@ -1,11 +1,12 @@
 [tool.cibuildwheel]
 
-archs = ["auto64"]
+archs = ["native"]
 build-frontend = "build"
 
 build = "cp38-* cp39-* cp310-* pp39-*"
 skip = "pp* *-win* *-win32*"
 
+test-requires = ["packaging", "cython", "numpy"]
 test-command = "echo 'Wheel installed successfully'"
 
 [tool.cibuildwheel.linux]
