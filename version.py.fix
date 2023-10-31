@@ -27,13 +27,9 @@ CLASSIFIERS = ["Development Status :: 3 - Alpha",
 
 PYTHON_VERSION = ""
 with open('.python-version') as f:
-    _py_versions = sorted([spec.strip("\n") for spec in f],
-                          key=lambda x: tuple(map(int, x.split("."))))
-
-    if len(_py_versions) == 1:
-        PYTHON_VERSION=f"~={_py_versions[0]}"
-    else:
-        PYTHON_VERSION=f">={_py_versions[0]},<={_py_versions[-1]}"
+    _ = f.readline().strip("\n") # Skip best python target, we are
+                                 # interested in the versions range
+    PYTHON_VERSION = f.readline().strip("\n")
 
 # Description should be a one-liner:
 description = "Scilpy: diffusion MRI tools and utilities"
