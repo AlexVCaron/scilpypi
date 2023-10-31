@@ -29,7 +29,7 @@ jobs:
         run: cp ${GITHUB_WORKSPACE}/scilpypi/scilpy-requirements.txt.fix ${GITHUB_WORKSPACE}/scilpy/requirements.txt
 
       - name: Create source distribution for Scilpy
-        run: pipx run build --sdist
+        run: pipx run build --sdist --outdir ${GITHUB_WORKSPACE}/sdist ${GITHUB_WORKSPACE}/scilpy
 
       - name: Build wheels for Scilpy
         uses: pypa/cibuildwheel@v2.16.2
@@ -51,8 +51,8 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           path: |
-            ./wheelhouse/*.whl
-            ./dist/*.tar.gz
+            ${GITHUB_WORKSPACE}/wheelhouse/*.whl
+            ${GITHUB_WORKSPACE}/sdist/*.tar.gz
 
       - name: Get release information from Scilpy release
         id: scilpy-release-info
@@ -71,5 +71,5 @@ jobs:
             Wheels and Source Distribution for Scilpy ${{ github.ref_name }}.
             ${{ steps.scilpy-release-info.outputs.body }}
           files: |
-            ./dist/*.tar.gz
-            ./wheelhouse/*.whl
+            ${GITHUB_WORKSPACE}/sdist/*.tar.gz
+            ${GITHUB_WORKSPACE}/wheelhouse/*.whl
