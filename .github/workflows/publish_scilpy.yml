@@ -13,48 +13,63 @@ jobs:
         os: [ubuntu-20.04]
 
     steps:
-      - uses: actions/checkout@v4
-
-      # Used to host cibuildwheel
-      - uses: actions/setup-python@v3
-
-      - name: Get tag
-        id: tag
-        uses: dawidd6/action-get-tag@v1
-
-      - uses: actions/checkout@v4
+      - name: Checkout Scilpy 
+        uses: actions/checkout@v4
         with:
           repository: scilus/scilpy
-          ref: ${{steps.tag.outputs.tag}}
+          ref: ${{ github.ref_name }}
+          path: scilpy
+
+      - name: Checkout Scilpypi
+        uses: actions/checkout@v4
+        with:
+          path: scilpypi
 
       - name: Patch scilpy requirements
-        run: wget https://raw.githubusercontent.com/AlexVCaron/scilpypi/${{steps.tag.outputs.tag}}/scilpy-requirements.txt.fix -O requirements.txt
+        run: cp ${GITHUB_WORKSPACE}/scilpypi/scilpy-requirements.txt.fix ${GITHUB_WORKSPACE}/scilpy/requirements.txt
 
-      - name: Install pipx
-        uses: CfirTsabari/actions-pipx@v1
-
-      - name: Create sdist for Scilpy
+      - name: Create source distribution for Scilpy
         run: pipx run build --sdist
 
-      - uses: actions/upload-artifact@v3
+      - name: Build wheels for Scilpy
+        uses: pypa/cibuildwheel@v2.16.2
         with:
-          path: ./dist
-
-      - name: Install cibuildwheel
-        run: python -m pip install cibuildwheel==2.16.2
-
-      - name: Build wheels
-        run: python -m cibuildwheel --output-dir wheelhouse
+          package-dir: ${GITHUB_WORKSPACE}/scilpy
+          output-dir: ${GITHUB_WORKSPACE}/wheelhouse
         env:
           CIBW_BUILD_FRONTEND: build
-          CIBW_BEFORE_BUILD: >
+          CIBW_BEFORE_ALL_LINUX: >
             yum -y update && yum -y install \
               blas-devel \
               lapack-devel \
               freetype-devel
           CIBW_BUILD: cp38-* cp39-* cp310-* pp39-*
           CIBW_SKIP: "*-win* *-win32* *-musllinux* *i686"
+          CIBW_TEST_COMMAND: "echo 'Wheel installed sucecssfully'"
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload wheels and source to artifacts
+        uses: actions/upload-artifact@v3
         with:
-          path: ./wheelhouse/*.whl
+          path: |
+            ./wheelhouse/*.whl
+            ./dist/*.tar.gz
+
+      - name: Get release information from Scilpy release
+        id: scilpy-release-info
+        uses: cardinalby/git-get-release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          repo: scilus/scilpy
+          tag: ${{ github.ref_name }}
+          doNotFailIfNotFound: true
+
+      - name: Add wheels and sdist to release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: |
+            Wheels and Source Distribution for Scilpy ${{ github.ref_name }}.
+            ${{ steps.scilpy-release-info.outputs.body }}
+          files: |
+            ./dist/*.tar.gz
+            ./wheelhouse/*.whl
