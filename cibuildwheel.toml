@@ -1,0 +1,16 @@
+[tool.cibuildwheel]
+
+archs = ["auto64"]
+build-frontend = "build"
+
+build = "cp38-* cp39-* cp310-* pp39-*"
+skip = "pp* *-win* *-win32* *-musllinux*"
+
+test-command = "echo 'Wheel installed successfully'"
+
+[tool.cibuildwheel.linux]
+before-all = "yum -y update && yum -y install blas-devel lapack-devel freetype-devel"
+
+[[tool.cibuildwheel.overrides]]
+select = "*-musllinux*"
+before-all = "apk add --no-cache blas-dev lapack-dev freetype-dev"

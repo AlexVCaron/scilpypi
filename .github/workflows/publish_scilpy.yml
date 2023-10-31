@@ -46,17 +46,7 @@ jobs:
         with:
           package-dir: ${{ steps.workspace.outputs.path }}/scilpy
           output-dir: ${{ steps.workspace.outputs.path }}/wheelhouse
-        env:
-          CIBW_ARCHS: auto64
-          CIBW_BUILD_FRONTEND: build
-          CIBW_BEFORE_ALL_LINUX: >
-            yum -y update && yum -y install \
-              blas-devel \
-              lapack-devel \
-              freetype-devel
-          CIBW_BUILD: cp38-* cp39-* cp310-* pp39-*
-          CIBW_SKIP: "pp* *-win* *-win32* *-musllinux*"
-          CIBW_TEST_COMMAND: "echo 'Wheel installed successfully'"
+          config-file: ${{ steps.workspace.outputs.path }}/scilpypi/cibuildwheel.toml
 
       - name: Upload wheels and source to artifacts
         uses: actions/upload-artifact@v3
