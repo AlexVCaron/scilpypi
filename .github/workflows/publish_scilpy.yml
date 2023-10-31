@@ -32,9 +32,7 @@ jobs:
           cp ${GITHUB_WORKSPACE}/scilpypi/version.py.fix ${GITHUB_WORKSPACE}/scilpy/scilpy/version.py
 
       - name: Create source distribution for Scilpy
-        run: |
-          pipx install --force packaging
-          pipx run build --sdist --outdir ${GITHUB_WORKSPACE}/sdist ${GITHUB_WORKSPACE}/scilpy
+        run: pipx run build --sdist --outdir ${GITHUB_WORKSPACE}/sdist ${GITHUB_WORKSPACE}/scilpy
 
       - name: Build wheels for Scilpy
         uses: pypa/cibuildwheel@v2.16.2
