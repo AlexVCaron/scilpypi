@@ -30,7 +30,6 @@ jobs:
           cp ${GITHUB_WORKSPACE}/scilpypi/scilpy-requirements.txt.fix ${GITHUB_WORKSPACE}/scilpy/requirements.txt
           cp ${GITHUB_WORKSPACE}/scilpypi/.python-version.fix ${GITHUB_WORKSPACE}/scilpy/.python-version
           cp ${GITHUB_WORKSPACE}/scilpypi/version.py.fix ${GITHUB_WORKSPACE}/scilpy/scilpy/version.py
-          cp ${GITHUB_WORKSPACE}/scilpypi/setup.py.fix ${GITHUB_WORKSPACE}/scilpy/setup.py
 
       - name: Create source distribution for Scilpy
         run: |

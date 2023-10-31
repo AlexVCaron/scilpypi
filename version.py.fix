@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import glob
-from packaging.version import parse
 
 # Format expected by setup.py and doc/source/conf.py: string of form "X.Y.Z"
 _version_major = 1
@@ -28,7 +27,8 @@ CLASSIFIERS = ["Development Status :: 3 - Alpha",
 
 PYTHON_VERSION = ""
 with open('.python-version') as f:
-    _py_versions = sorted([parse(spec.strip("\n")) for spec in f])
+    _py_versions = sorted([spec.strip("\n") for spec in f],
+                          key=lambda x: tuple(map(int, x.split("."))))
 
     if len(_py_versions) == 1:
         PYTHON_VERSION=f"~={_py_versions[0]}"
