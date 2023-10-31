@@ -40,6 +40,7 @@ jobs:
           package-dir: ${GITHUB_WORKSPACE}/scilpy
           output-dir: ${GITHUB_WORKSPACE}/wheelhouse
         env:
+          CIBW_ARCHS: auto64
           CIBW_BUILD_FRONTEND: build
           CIBW_BEFORE_ALL_LINUX: >
             yum -y update && yum -y install \
@@ -47,7 +48,7 @@ jobs:
               lapack-devel \
               freetype-devel
           CIBW_BUILD: cp38-* cp39-* cp310-* pp39-*
-          CIBW_SKIP: "*-win* *-win32* *-musllinux* *i686"
+          CIBW_SKIP: "pp* *-win* *-win32* *-musllinux*"
           CIBW_TEST_COMMAND: "echo 'Wheel installed sucecssfully'"
 
       - name: Upload wheels and source to artifacts
