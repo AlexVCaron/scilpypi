@@ -6,6 +6,9 @@ on:
 
 jobs:
   build_wheels:
+    permissions:
+      contents: write
+
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -13,32 +16,35 @@ jobs:
         os: [ubuntu-20.04]
 
     steps:
+      - id: workspace
+        run: echo "::set-output name=path::${GITHUB_WORKSPACE}"
+
       - name: Checkout Scilpy 
         uses: actions/checkout@v4
         with:
           repository: scilus/scilpy
           ref: ${{ github.ref_name }}
-          path: scilpy
+          path: ${{ steps.workspace.outputs.path }}/scilpy
 
       - name: Checkout Scilpypi
         uses: actions/checkout@v4
         with:
-          path: scilpypi
+          path: ${{ steps.workspace.outputs.path }}/scilpypi
 
       - name: Patch scilpy requirements
         run: |
-          cp ${GITHUB_WORKSPACE}/scilpypi/scilpy-requirements.txt.fix ${GITHUB_WORKSPACE}/scilpy/requirements.txt
-          cp ${GITHUB_WORKSPACE}/scilpypi/.python-version.fix ${GITHUB_WORKSPACE}/scilpy/.python-version
-          cp ${GITHUB_WORKSPACE}/scilpypi/version.py.fix ${GITHUB_WORKSPACE}/scilpy/scilpy/version.py
+          cp ${{ steps.workspace.outputs.path }}/scilpypi/scilpy-requirements.txt.fix ${{ steps.workspace.outputs.path }}/scilpy/requirements.txt
+          cp ${{ steps.workspace.outputs.path }}/scilpypi/.python-version.fix ${{ steps.workspace.outputs.path }}/scilpy/.python-version
+          cp ${{ steps.workspace.outputs.path }}/scilpypi/version.py.fix ${{ steps.workspace.outputs.path }}/scilpy/scilpy/version.py
 
       - name: Create source distribution for Scilpy
-        run: pipx run build --sdist --outdir ${GITHUB_WORKSPACE}/sdist ${GITHUB_WORKSPACE}/scilpy
+        run: pipx run build --sdist --outdir ${{ steps.workspace.outputs.path }}/sdist ${{ steps.workspace.outputs.path }}/scilpy
 
       - name: Build wheels for Scilpy
         uses: pypa/cibuildwheel@v2.16.2
         with:
-          package-dir: ${GITHUB_WORKSPACE}/scilpy
-          output-dir: ${GITHUB_WORKSPACE}/wheelhouse
+          package-dir: ${{ steps.workspace.outputs.path }}/scilpy
+          output-dir: ${{ steps.workspace.outputs.path }}/wheelhouse
         env:
           CIBW_ARCHS: auto64
           CIBW_BUILD_FRONTEND: build
@@ -49,14 +55,14 @@ jobs:
               freetype-devel
           CIBW_BUILD: cp38-* cp39-* cp310-* pp39-*
           CIBW_SKIP: "pp* *-win* *-win32* *-musllinux*"
-          CIBW_TEST_COMMAND: "echo 'Wheel installed sucecssfully'"
+          CIBW_TEST_COMMAND: "echo 'Wheel installed successfully'"
 
       - name: Upload wheels and source to artifacts
         uses: actions/upload-artifact@v3
         with:
           path: |
-            ${GITHUB_WORKSPACE}/wheelhouse/*.whl
-            ${GITHUB_WORKSPACE}/sdist/*.tar.gz
+            ${{ steps.workspace.outputs.path }}/wheelhouse/*.whl
+            ${{ steps.workspace.outputs.path }}/sdist/*.tar.gz
 
       - name: Get release information from Scilpy release
         id: scilpy-release-info
@@ -70,10 +76,13 @@ jobs:
 
       - name: Add wheels and sdist to release
         uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
           body: |
-            Wheels and Source Distribution for Scilpy ${{ github.ref_name }}.
+            # Wheels and Source Distribution for Scilpy ${{ github.ref_name }}.
+
             ${{ steps.scilpy-release-info.outputs.body }}
           files: |
-            ${GITHUB_WORKSPACE}/sdist/*.tar.gz
-            ${GITHUB_WORKSPACE}/wheelhouse/*.whl
+            ${{ steps.workspace.outputs.path }}/sdist/*.tar.gz
+            ${{ steps.workspace.outputs.path }}/wheelhouse/*.whl
