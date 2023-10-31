@@ -26,7 +26,10 @@ jobs:
           path: scilpypi
 
       - name: Patch scilpy requirements
-        run: cp ${GITHUB_WORKSPACE}/scilpypi/scilpy-requirements.txt.fix ${GITHUB_WORKSPACE}/scilpy/requirements.txt
+        run: |
+          cp ${GITHUB_WORKSPACE}/scilpypi/scilpy-requirements.txt.fix ${GITHUB_WORKSPACE}/scilpy/requirements.txt
+          cp ${GITHUB_WORKSPACE}/scilpypi/.python-version.fix ${GITHUB_WORKSPACE}/scilpy/.python-version
+          cp ${GITHUB_WORKSPACE}/scilpypi/version.py.fix ${GITHUB_WORKSPACE}/scilpy/scilpy/version.py
 
       - name: Create source distribution for Scilpy
         run: pipx run build --sdist --outdir ${GITHUB_WORKSPACE}/sdist ${GITHUB_WORKSPACE}/scilpy
