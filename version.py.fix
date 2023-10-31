@@ -29,7 +29,7 @@ PYTHON_VERSION = ""
 with open('.python-version') as f:
     _py_versions = []
     for ver_spec in f:
-        py_version = ver_spec.readline().strip("\n").split(".")
+        py_version = ver_spec.strip("\n").split(".")
         py_major = py_version[0]
         py_minor = py_version[1]
         py_micro = "*"
