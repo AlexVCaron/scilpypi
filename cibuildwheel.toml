@@ -4,7 +4,7 @@ archs = ["auto64"]
 build-frontend = "build"
 
 build = "cp38-* cp39-* cp310-* pp39-*"
-skip = "pp* *-win* *-win32* *-musllinux*"
+skip = "pp* *-win* *-win32*"
 
 test-command = "echo 'Wheel installed successfully'"
 
