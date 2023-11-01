@@ -37,7 +37,6 @@ jobs:
           cp ${{ steps.workspace.outputs.path }}/scilpypi/scilpy-requirements.txt.fix ${{ steps.workspace.outputs.path }}/scilpy/requirements.txt
           cp ${{ steps.workspace.outputs.path }}/scilpypi/.python-version.fix ${{ steps.workspace.outputs.path }}/scilpy/.python-version
           cp ${{ steps.workspace.outputs.path }}/scilpypi/version.py.fix ${{ steps.workspace.outputs.path }}/scilpy/scilpy/version.py
-          cp ${{ steps.workspace.outputs.path }}/scilpypi/setup.py.fix ${{ steps.workspace.outputs.path }}/scilpy/setup.py
 
       - name: Create source distribution for Scilpy
         run: pipx run build --sdist --outdir ${{ steps.workspace.outputs.path }}/sdist ${{ steps.workspace.outputs.path }}/scilpy

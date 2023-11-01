@@ -6,7 +6,7 @@ build-frontend = "build"
 build = "cp38-* cp39-* cp310-* pp39-*"
 skip = "pp* *-win* *-win32*"
 
-test-requires = ["packaging", "cython", "numpy"]
+before-test = "pip install packaging"
 test-command = "echo 'Wheel installed successfully'"
 
 [tool.cibuildwheel.linux]
