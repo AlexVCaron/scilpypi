@@ -20,5 +20,5 @@ before-all = "apk add --no-cache blas-dev lapack-dev freetype-dev"
 select = "*aarch64"
 before-test = """
 pip install packaging
-export PIP_EXTRA_INDEX_URL=https://gitlab.kitware.com/api/v4/projects/13/packages/pypi/simple/
+pip config set global.extra-index-url https://gitlab.kitware.com/api/v4/projects/13/packages/pypi/simple/
 """
