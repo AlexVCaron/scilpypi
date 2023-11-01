@@ -4,7 +4,7 @@ archs = ["native"]
 build-frontend = "build"
 
 build = "cp38-* cp39-* cp310-* pp39-*"
-skip = "pp* *-win* *-win32*"
+skip = "pp* *-win* *-win32* cp38-*aarch64"
 
 before-test = "pip install packaging"
 test-command = "echo 'Wheel installed successfully'"
