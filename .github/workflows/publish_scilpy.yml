@@ -41,11 +41,12 @@ jobs:
       - name: Create source distribution for Scilpy
         run: pipx run build --sdist --outdir ${{ steps.workspace.outputs.path }}/sdist ${{ steps.workspace.outputs.path }}/scilpy
 
-      - name: Set up QEMU
-        if: runner.os == 'Linux'
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: all
+      # Once we have aarch64 vtk wheels, we can reinstate this to build scilpy wheels for aarch64
+      #- name: Set up QEMU
+      #  if: runner.os == 'Linux'
+      #  uses: docker/setup-qemu-action@v3
+      #  with:
+      #    platforms: all
 
       - name: Build wheels for Scilpy
         uses: pypa/cibuildwheel@v2.16.2
@@ -54,7 +55,7 @@ jobs:
           output-dir: ${{ steps.workspace.outputs.path }}/wheelhouse
           config-file: ${{ steps.workspace.outputs.path }}/scilpypi/cibuildwheel.toml
         env:
-          CIBW_ARCHS_LINUX: aarch64
+          CIBW_ARCHS_LINUX: auto
 
       - name: Upload wheels and source to artifacts
         uses: actions/upload-artifact@v3
