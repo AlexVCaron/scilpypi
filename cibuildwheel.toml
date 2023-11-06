@@ -24,7 +24,7 @@ skip = "pp* *-win* *-win32* *aarch64"
 test-command = "echo 'Wheel installed successfully'"
 
 # Dipy forgot to list packaging, we should not need this after 1.8.0
-before-test = "pip install packaging Cython"
+before-test = "pip install packaging"
 
 # Install blas, lapack, freetype
 [tool.cibuildwheel.linux]
