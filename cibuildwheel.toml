@@ -27,12 +27,12 @@ before-test = "pip install packaging"
 
 # Install blas, lapack, freetype
 [tool.cibuildwheel.linux]
-before-all = "yum -y update && yum -y install blas-devel lapack-devel freetype-devel"
+before-all = "yum -y update && yum -y install blas-devel hdf5-devel lapack-devel freetype-devel"
 
 # Musl Linux uses APK instead of YUM
 [[tool.cibuildwheel.overrides]]
 select = "*-musllinux*"
-before-all = "apk add --no-cache blas-dev lapack-dev freetype-dev"
+before-all = "apk add --no-cache blas-dev hdf5-dev lapack-dev freetype-dev"
 
 # To reinstate once vtk has official linux aarch64 wheels available (we won't build them for them)
 #[[tool.cibuildwheel.overrides]]
