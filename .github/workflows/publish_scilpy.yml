@@ -43,11 +43,11 @@ jobs:
         run: pipx run build --sdist --outdir ${{ steps.workspace.outputs.path }}/sdist ${{ steps.workspace.outputs.path }}/scilpy
 
       # Once we have aarch64 vtk wheels, we can reinstate this to build scilpy wheels for aarch64
-      #- name: Set up QEMU
-      #  if: runner.os == 'Linux'
-      #  uses: docker/setup-qemu-action@v3
-      #  with:
-      #    platforms: all
+      - name: Set up QEMU
+        if: runner.os == 'Linux'
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: all
 
       - name: Build wheels for Scilpy
         uses: pypa/cibuildwheel@v2.16.2
