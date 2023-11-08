@@ -29,21 +29,13 @@ before-test = "pip install packaging"
 # Install blas, lapack, freetype on x86_64
 [tool.cibuildwheel.linux]
 before-all = "yum -y update && yum -y install blas-devel lapack-devel freetype-devel"
+before-test = "yum -y update && yum -y install blas lapack freetype && pip install packaging"
 
 # Musl Linux uses APK instead of YUM, on x86_64
 [[tool.cibuildwheel.overrides]]
 select = "*-musllinux*"
 before-all = "apk add --no-cache blas-dev lapack-dev freetype-dev"
-
-# Install blas, lapack, freetype on i686
-[[tool.cibuildwheel.overrides]]
-select = "*manylinux_i686"
-before-all = "yum -y update && yum -y install blas-devel.i686 lapack-devel.i686 freetype-devel.i686"
-
-# Musl Linux uses APK instead of YUM, on i686
-[[tool.cibuildwheel.overrides]]
-select = "*-musllinux_i686"
-before-all = "echo \"i686\" > /etc/apk/arch && apk add --no-cache blas-dev lapack-dev freetype-dev"
+before-test = "apk add --no-cache blas lapack freetype && pip install packaging"
 
 # To reinstate once vtk has official linux aarch64 wheels available (we won't build them for them)
 #[[tool.cibuildwheel.overrides]]
