@@ -56,7 +56,7 @@ jobs:
           output-dir: ${{ steps.workspace.outputs.path }}/wheelhouse
           config-file: ${{ steps.workspace.outputs.path }}/scilpypi/cibuildwheel.toml
         env:
-          CIBW_ARCHS_LINUX: auto
+          CIBW_ARCHS_LINUX: i686
 
       - name: Upload wheels and source to artifacts
         uses: actions/upload-artifact@v3
