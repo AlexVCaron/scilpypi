@@ -81,6 +81,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
+          tag_name: ${{ github.ref_name }}
           body: |
             # Wheels and Source Distribution for Scilpy ${{ github.ref_name }}.
 
